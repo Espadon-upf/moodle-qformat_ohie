@@ -15,19 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for qformat_csv.
+ * Privacy Subsystem implementation for qformat_ohie.
  *
- * @package    qformat_hiuao
+ * @package    qformat_ohie
  * @copyright  2021 Giard Kenan <giard.kenan@hotmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qformat_hiuao\privacy;
+namespace qformat_ohie\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Privacy Subsystem for qformat_hiuao implementing null_provider.
+ * Privacy Subsystem for qformat_ohie implementing null_provider.
  *
  * @copyright  2021 Giard Kenan <giard.kenan@hotmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
