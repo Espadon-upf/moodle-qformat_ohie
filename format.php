@@ -61,7 +61,7 @@ class qformat_ohie extends qformat_default {
         return true;
     }
 
-    public function readquestion($lines){
+    public function readquestions($lines){
         global $CFG;
         require_once($CFG->libdir . '/csvlib.class.php');
         question_bank::get_qtype('multianswer');
