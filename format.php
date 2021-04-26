@@ -58,7 +58,15 @@ class qformat_ohie extends qformat_default {
     }
 
     public function provide_export() {
-        return true;
+        return false;
+    }
+
+    /**
+     * @return string the file extension (including .) that is normally used for
+     * files handled by this plugin.
+     */
+    public function export_file_extension() {
+        return '.csv';
     }
 
     public function readquestions($lines){
@@ -68,31 +76,25 @@ class qformat_ohie extends qformat_default {
         $questions = array();
         $question = $this->defaultquestion();
         $headers = explode(';', $lines[1]);
-        $totalofquestion = $lignes[count($lignes)][0];
+        $totalofquestion = $lines[count($lines)][0];
         $questioncatégory = explode(';', $lines[0])[1];
 
         for ($rownum = 2; $rownum < count($lines); $rownum++){
-            $rowdata = str_getcsv($lignes[$rownum],";");
+            $rowdata = str_getcsv($lines[$rownum],";");
             if($rowdata[1] != "") {
                 $columncount = count($rowdata);
                 $headerscount = count($headers);
 
-                setessentialpart($question, $questioncatégory, $rowdata, $rownum, $totalofquestion);
-                $this->setquestion($question,$rowdata);
+                $question = $this->setessentialpart($question, $questioncatégory, $rowdata, $rownum, $totalofquestion);
+                $question = $this->setquestion($question,$rowdata);
                 $questions[] = $question;
             }
             else{
                 //alerte
             }
         }
+        return $questions;
 
-    }
-    /**
-     * @return string the file extension (including .) that is normally used for
-     * files handled by this plugin.
-     */
-    public function export_file_extension() {
-        return '.csv';
     }
 
     protected function text_field($text) {
@@ -111,6 +113,7 @@ class qformat_ohie extends qformat_default {
     private function import_truefalse($question, $rowdata){
         $question->qtype = 'truefalse';
         $question->answer = $rowdata[8];
+        return $question;
     }
 
     private function import_shortanswer($question, $rowdata){
@@ -128,7 +131,7 @@ class qformat_ohie extends qformat_default {
                 $countanswers++;
             }
         }
-
+        return $question;
     }
 
     private function import_numerical($question, $rowdata){
@@ -136,31 +139,34 @@ class qformat_ohie extends qformat_default {
         $question->answer = $rowdata[8];
         $usertolerance = $rowdata[7];
         $question->tolerance = $usertolerance;
+        return $question;
     }
 
     private function import_essay($question, $rowdata){
         $question->qtype = 'essay';
+        return $question;
     }
 
     private function import_multichoice_one_right_answer($question, $rowdata){
-    $useranswer = $rowdata[$i];
-    $rightanswer = $rowdata[8];
-    $userpenality = $rowdata[6];
-    if($userpenality == '')
-        $userpenality = 0;
-    $question->qtype = 'multichoice';
-    $question->single = 1;
-    $question->penalty = $userpenality;
-    for($i = 9; $i < 15; $i++){
-        if($useranswer != ""){
-            $question->answer[] = $useranswer;
-            if($useranswer == $rightanswer){
-                $question->fraction[] = 100;
-            } else{
-                $question->fraction[] = (-1 * $userpenality);
+        $useranswer = $rowdata[$i];
+        $rightanswer = $rowdata[8];
+        $userpenality = $rowdata[6];
+        if($userpenality == '')
+            $userpenality = 0;
+        $question->qtype = 'multichoice';
+        $question->single = 1;
+        $question->penalty = $userpenality;
+        for($i = 9; $i < 15; $i++){
+            if($useranswer != ""){
+                $question->answer[] = $useranswer;
+                if($useranswer == $rightanswer){
+                    $question->fraction[] = 100;
+                } else{
+                    $question->fraction[] = (-1 * $userpenality);
+                }
             }
         }
-    }
+        return $question;
     }
 
     private function import_multichoice_multiple_right_answer($question, $rowdata){
@@ -189,6 +195,7 @@ class qformat_ohie extends qformat_default {
                 $question->fraction[] = $userfranctionbadanswer;
             }
         }
+        return $question;
     }
 
     private function import_multichoice_all_or_nothing($rowdata){
@@ -233,6 +240,7 @@ class qformat_ohie extends qformat_default {
         }
         // génnéral feedback
         $question->generalfeedback = $rowdata[5];
+        return $question;
     }
 
     private function getquestionname($rowdata, $totalofquestion){
@@ -260,15 +268,15 @@ class qformat_ohie extends qformat_default {
     private function setquestion($question, $rowdata){
         $questiontype = $rowdata[2];
         if ($questiontype == "True/False"){
-            $this->import_truefalse($question, $rowdata);
+            $question = $this->import_truefalse($question, $rowdata);
         } elseif ($questiontype == "Short answer"){
-            $this->import_shortanswer($question, $rowdata);
+            $question = $this->import_shortanswer($question, $rowdata);
         } elseif ($questiontype == "Numerical"){
-            $this->import_numerical($question, $rowdata);
+            $question = $this->import_numerical($question, $rowdata);
         } elseif ($questiontype == "Essay"){
-            $this->import_essay($question, $rowdata);
+            $question = $this->import_essay($question, $rowdata);
         } elseif ($questiontype == "Multiple Choice one right answer") {
-            $this->import_multichoice_one_right_answer($question, $rowdata);
+            $question = $this->import_multichoice_one_right_answer($question, $rowdata);
         } elseif ($questiontype == "Multiple Choice all or nothing") {
             question_bank::load_question_definition_classes('multichoiceset');
             $mc = new qtype_multichoiceset_question();
@@ -283,9 +291,10 @@ class qformat_ohie extends qformat_default {
             $mc->answers = $this->import_multichoice_all_or_nothing($rowdata);
             $question = $mc;
         } elseif ($questiontype == "Multiple Choice multiple right answers") {
-            $this->import_multichoice_multiple_right_answer($question, $rowdata);
+            $question = $this->import_multichoice_multiple_right_answer($question, $rowdata);
         } else {
             //eror
         }
+        return $question;
     }
 }
