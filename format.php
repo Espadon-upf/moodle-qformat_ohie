@@ -51,7 +51,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 
 $globals['header'] = true;
-class qformat_hiuao extends qformat_default {
+class qformat_ohie extends qformat_default {
 
     public function provide_import() {
         return true;

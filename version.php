@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the component 'qformat_csv'.
+ * Version information for the component 'qformat_ohie'.
  *
- * @package    qformat_hiuao
+ * @package    qformat_ohie
  * @copyright  2021 Giard Kenan <giard.kenan@hotmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
