@@ -72,21 +72,23 @@ class qformat_ohie extends qformat_default {
     public function readquestions($lines){
         global $CFG;
         require_once($CFG->libdir . '/csvlib.class.php');
-        question_bank::get_qtype('multianswer');
         $questions = array();
-        $question = $this->defaultquestion();
         $headers = explode(';', $lines[1]);
-        $totalofquestion = $lines[count($lines)][0];
-        $questioncatégory = explode(';', $lines[0])[1];
-
+        $totalofquestion = 0;
         for ($rownum = 2; $rownum < count($lines); $rownum++){
             $rowdata = str_getcsv($lines[$rownum],";");
-            if($rowdata[1] != "") {
+            if($rowdata[0] != ''){
+                $totalofquestion = $rowdata[0];
+            }
+        }
+        $questioncatégory = explode(';', $lines[0])[1];
+        for ($rownum = 2; $rownum < count($lines); $rownum++){
+            $rowdata = str_getcsv($lines[$rownum],";");
+            if(!empty($rowdata[2])) {
                 $columncount = count($rowdata);
                 $headerscount = count($headers);
-
-                $question = $this->setessentialpart($question, $questioncatégory, $rowdata, $rownum, $totalofquestion);
-                $question = $this->setquestion($question,$rowdata);
+                $question = $this->setquestion($rowdata);
+                $question = $this->setessentialpart($question, $questioncatégory, $rowdata, $totalofquestion);
                 $questions[] = $question;
             }
             else{
@@ -110,68 +112,104 @@ class qformat_ohie extends qformat_default {
         return;
     }
 
-    private function import_truefalse($question, $rowdata){
+    private function import_truefalse($rowdata){
+        question_bank::get_qtype('truefalse');
+        $question = $this->defaultquestion();
         $question->qtype = 'truefalse';
-        $question->answer = $rowdata[8];
+        $rightfeedback = array('text' => '', 'format' => FORMAT_HTML, 'files' => array());
+        $wrongfeedback = array('text' => '', 'format' => FORMAT_HTML, 'files' => array());
+        if(strpos($rowdata[8],'T')||strpos($rowdata[8],'t')){
+            $question->correctanswer = 1;
+            $question->feedbacktrue = $rightfeedback;
+            $question->feedbackfalse = $wrongfeedback;
+        } else {
+            $question->correctanswer = 0;
+            $question->feedbacktrue = $wrongfeedback;
+            $question->feedbackfalse = $rightfeedback;
+        }
         return $question;
     }
 
-    private function import_shortanswer($question, $rowdata){
+    private function import_shortanswer($rowdata){
+        question_bank::get_qtype('shortanswer');
+        $question = $this->defaultquestion();
         $question->qtype = 'shortanswer';
         $useranswers = array();
         for($i = 8; $i < 15; $i++){
-            $useranswers[] = $rowdata[i];
+            $useranswers[] = $rowdata[$i];
         }
-        $countanswers = 0;
-
-        foreach($useranswers as $useranswer){
+        foreach($useranswers as $key => $useranswer){
             if ($useranswer != ""){
-                $question->answer[$countanswers] = $useranswer;
-                $question->fraction[$countanswers] = 100;
-                $countanswers++;
+                $question->answer[$key] = $useranswer;
+                $question->fraction[$key] = 1;
+                $question->feedback[$key] = array('text' => '', 'format' => FORMAT_HTML, 'files' => array());
             }
         }
         return $question;
     }
 
-    private function import_numerical($question, $rowdata){
-        $question->qtype = numerical;
-        $question->answer = $rowdata[8];
-        $usertolerance = $rowdata[7];
-        $question->tolerance = $usertolerance;
+    private function import_numerical($rowdata){
+        question_bank::get_qtype('numerical');
+        $question = $this->defaultquestion();
+        $question->qtype = 'numerical';
+        $answer = $rowdata[8];
+        $question->answer[] = $answer;
+        $question->fraction[] = 1;
+        $question->tolerance[] = $rowdata[7];
+        $question->feedback[] = array('text' => '', 'format' => FORMAT_HTML, 'files' => array());
         return $question;
     }
 
-    private function import_essay($question, $rowdata){
+    private function import_essay($rowdata){
+        question_bank::get_qtype('essay');
+        $question = $this->defaultquestion();
         $question->qtype = 'essay';
+        $question->responseformat = 'editor';
+        $question->responserequired = 1;
+        $question->responsefieldlines = 15;
+        $question->attachments = 0;
+        $question->attachmentsrequired = 0;
+        $question->graderinfo = array(
+            'text' => '', 'format' => FORMAT_HTML, 'files' => array());
+        $question->responsetemplate = array(
+            'text' => '', 'format' => FORMAT_HTML);
+        $question->maxbytes = 0;
+        $question->filetypeslist= null;
         return $question;
     }
 
-    private function import_multichoice_one_right_answer($question, $rowdata){
-        $useranswer = $rowdata[$i];
+    private function import_multichoice_one_right_answer($rowdata){
+        question_bank::get_qtype('multichoice');
+        $question = $this->defaultquestion();
+        $useranswers = $this->getanswers($rowdata);
         $rightanswer = $rowdata[8];
-        $userpenality = $rowdata[6];
-        if($userpenality == '')
+        if($rowdata[6] == ''){
             $userpenality = 0;
+        } else{
+            $userpenality = $rowdata[6]/100;
+        }
         $question->qtype = 'multichoice';
         $question->single = 1;
         $question->penalty = $userpenality;
-        for($i = 9; $i < 15; $i++){
-            if($useranswer != ""){
-                $question->answer[] = $useranswer;
-                if($useranswer == $rightanswer){
-                    $question->fraction[] = 100;
-                } else{
-                    $question->fraction[] = (-1 * $userpenality);
-                }
+        $acount = 0;
+        foreach ($useranswers as $key => $useranswer){
+            $question->answer[$acount] = array('text' => $useranswer, 'format' => FORMAT_HTML, 'files' => array());
+            if($key == $rightanswer){
+                $question->fraction[$acount] = 1;
+            } else {
+                $question->fraction[$acount] = -1*$userpenality;
             }
+            $question->feedback[$acount] = array('text' => '', 'format' => FORMAT_HTML, 'files' => array());
+            $acount++;
         }
         return $question;
     }
 
-    private function import_multichoice_multiple_right_answer($question, $rowdata){
-        $question->signgle = 0;
-        $question->qtype = multichoice;
+    private function import_multichoice_multiple_right_answer($rowdata){
+        question_bank::get_qtype('multichoice');
+        $question = $this->defaultquestion();
+        $question->single = 0;
+        $question->qtype = 'multichoice';
         $userrightanswers = explode(',',$rowdata[8]);
         $useranswers = $this->getanswers($rowdata);
 
@@ -184,41 +222,50 @@ class qformat_ohie extends qformat_default {
             }
         }
 
-        $userfractionrightanswer = 100/count($userrightanswers);
-        $userfranctionbadanswer = -100/(count($useranswers)-count($userrightanswers));
-
+        $userfractionrightanswer = 1/count($userrightanswers);
+        $userfranctionbadanswer = -1/(count($useranswers)-count($userrightanswers));
+        $acount = 0;
         foreach($useranswers as $key => $useranswer){
-            $question->answer[] = $useranswer;
+            $question->answer[$acount] = array('text' => $useranswer, 'format' => FORMAT_HTML, 'files' => array());
+            $question->feedback[$acount] = array('text' => '', 'format' => FORMAT_HTML, 'files' => array());
             if(in_array($key,$userrightanswers)){
-                $question->fraction[] = $userfractionrightanswer;
+                $question->fraction[$acount] = $userfractionrightanswer;
             } else{
-                $question->fraction[] = $userfranctionbadanswer;
+                $question->fraction[$acount] = $userfranctionbadanswer;
             }
+            $acount++;
         }
         return $question;
     }
 
     private function import_multichoice_all_or_nothing($rowdata){
+        question_bank::load_question_definition_classes('multichoiceset');
+        $question = $this->defaultquestion();
+        $question->qtype = 'multichoiceset';
+        $question->shuffleanswers = 1;
         $userrightanswers = explode(',',$rowdata[8]);
         $useranswers = $this->getanswers($rowdata);
-        $answers = array();
-        $numquestion = 1;
-        foreach ($useranswers as $key => $unseranswer){
+        $acount = 0;
+        foreach ($useranswers as $key => $useranswer){
+
+            $question->answer[$acount] = array('text' => $useranswer, 'format' => FORMAT_HTML);
+            $question->feedback[$acount] = array('text' => '', 'format' => FORMAT_HTML);
             if(in_array($key,$userrightanswers)){
-                $answers[$numquestion] = new question_answer($numquestion,$rowdata[4],1.0,'',FORMAT_HTML);
+                $question->fraction[$acount] = 1.0;
             }
             else{
-                $answers[$numquestion] = new question_answer($numquestion,$rowdata[4],0,'',FORMAT_HTML);
+                $question->fraction[$acount] = 1.0;
             }
+            $acount++;
         }
-        return($answers);
+        return($question);
     }
 
     private function getanswers($rowdata){
         $key = 'A';
         $answers = array();
         for($i = 9; $i < 15; $i++){
-            $curentanswers = $rowdata[i];
+            $curentanswers = $rowdata[$i];
             if(!empty($curentanswers))
                 $answers[$key] = $curentanswers;
             $key++;
@@ -233,6 +280,7 @@ class qformat_ohie extends qformat_default {
         $question->name = $this->getquestionname($rowdata, $totalofquestion );
         //question text
         $question->questiontext = $rowdata[4];
+        $question->questiontextformat = FORMAT_HTML;
         //default mark
         $questionmark = $rowdata[3];
         if($questionmark != 1 ) {
@@ -240,6 +288,7 @@ class qformat_ohie extends qformat_default {
         }
         // génnéral feedback
         $question->generalfeedback = $rowdata[5];
+        $question->generalfeedbackformat = FORMAT_HTML;
         return $question;
     }
 
@@ -265,33 +314,22 @@ class qformat_ohie extends qformat_default {
         return($rowdata[1]);
     }
 
-    private function setquestion($question, $rowdata){
-        $questiontype = $rowdata[2];
+    private function setquestion($rowdata){
+        $questiontype = trim($rowdata[2]);
         if ($questiontype == "True/False"){
-            $question = $this->import_truefalse($question, $rowdata);
+            $question = $this->import_truefalse($rowdata);
         } elseif ($questiontype == "Short answer"){
-            $question = $this->import_shortanswer($question, $rowdata);
+            $question = $this->import_shortanswer($rowdata);
         } elseif ($questiontype == "Numerical"){
-            $question = $this->import_numerical($question, $rowdata);
+            $question = $this->import_numerical($rowdata);
         } elseif ($questiontype == "Essay"){
-            $question = $this->import_essay($question, $rowdata);
+            $question = $this->import_essay($rowdata);
         } elseif ($questiontype == "Multiple Choice one right answer") {
-            $question = $this->import_multichoice_one_right_answer($question, $rowdata);
+            $question = $this->import_multichoice_one_right_answer($rowdata);
         } elseif ($questiontype == "Multiple Choice all or nothing") {
-            question_bank::load_question_definition_classes('multichoiceset');
-            $mc = new qtype_multichoiceset_question();
-            test_question_maker::initialise_a_question($mc);
-            $mc->name = $question->name;
-            $mc->questiontext = $question->questiontext;
-            $mc->generalfeedback = $question->generalfeedback;
-            $mc->qtype = question_bank::get_qtype('multichoiceset');
-            $mc->shuffleanswers = 1;
-            $mc->answernumbering = 'ABC';
-            test_question_maker::set_standard_combined_feedback_fields($mc);
-            $mc->answers = $this->import_multichoice_all_or_nothing($rowdata);
-            $question = $mc;
+            $question = $this->import_multichoice_all_or_nothing($rowdata);
         } elseif ($questiontype == "Multiple Choice multiple right answers") {
-            $question = $this->import_multichoice_multiple_right_answer($question, $rowdata);
+            $question = $this->import_multichoice_multiple_right_answer($rowdata);
         } else {
             //eror
         }
