@@ -73,7 +73,7 @@ class qformat_ohie extends qformat_default {
         global $CFG;
         require_once($CFG->libdir . '/csvlib.class.php');
         $questions = array();
-        $headers = explode(';', $lines[1]);
+
         $totalofquestion = 0;
         for ($rownum = 2; $rownum < count($lines); $rownum++){
             $rowdata = str_getcsv($lines[$rownum],";");
@@ -84,15 +84,25 @@ class qformat_ohie extends qformat_default {
         $questioncatégory = explode(';', $lines[0])[1];
         for ($rownum = 2; $rownum < count($lines); $rownum++){
             $rowdata = str_getcsv($lines[$rownum],";");
-            if(!empty($rowdata[2])) {
+            if(!empty($rowdata[0])) {
+                if(empty($rowdata[2])){
+                    echo get_string('type_error', 'qformat_ohie', $rownum-1);
+                    return 0;
+                } elseif (empty($rowdata[3])){
+                    $rowdata[3] = 1;
+                } elseif (empty($rowdata[4])){
+                    echo get_string('questiontext_error', 'qformat_ohie', $rownum-1);
+                    return 0;
+                } elseif (empty($rowdata[8])){
+                    if($rowdata[2] != "Essay"){
+                        echo get_string('rightanswer_error', 'qformat_ohie', $rownum-1);
+                        return 0;
+                    }
+                }
                 $columncount = count($rowdata);
-                $headerscount = count($headers);
                 $question = $this->setquestion($rowdata);
                 $question = $this->setessentialpart($question, $questioncatégory, $rowdata, $totalofquestion);
                 $questions[] = $question;
-            }
-            else{
-                //alerte
             }
         }
         return $questions;
@@ -215,6 +225,9 @@ class qformat_ohie extends qformat_default {
 
         if(count($useranswers) < count($userrightanswers)){
             imap_alerts();
+        }elseif (count($userrightanswers)<2){
+            echo get_string('alert_multichoice', 'qformat_ohie', $rowdata[0]);
+            return $this->import_multichoice_one_right_answer($rowdata);
         }
         foreach ($userrightanswers as $userrightanswer){
             if(empty($useranswers[$userrightanswer])){
@@ -245,6 +258,12 @@ class qformat_ohie extends qformat_default {
         $question->shuffleanswers = 1;
         $userrightanswers = explode(',',$rowdata[8]);
         $useranswers = $this->getanswers($rowdata);
+        if(count($useranswers) < count($userrightanswers)){
+            imap_alerts();
+        }elseif (count($userrightanswers)<2){
+            echo get_string('alert_multichoice', 'qformat_ohie', $rowdata[0]);
+            return $this->import_multichoice_one_right_answer($rowdata);
+        }
         $acount = 0;
         foreach ($useranswers as $key => $useranswer){
 

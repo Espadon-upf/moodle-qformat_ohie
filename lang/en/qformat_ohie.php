@@ -23,10 +23,12 @@
  */
 
 $string['pluginname'] = 'Ohie format';
-$string['pluginname_help'] = 'This is a CSV format based on XLSX file for importing questions. Please find the Sample xlsx(sample.xlsx) file sent along with this plugin for your reference.';
+$string['pluginname_help'] = 'This is a CSV format based on XLSX file for importing questions. 
+    Please find the Sample xlsx(sample.xlsx) file sent along with this plugin for your reference.';
 $string['pluginname_link'] = 'qformat/ohie';
-$string['commma_error'] = '<span style="color: #990000; "> Upload failed. Unnecessary Comma(,) found in <b> Question {$a} </b><br /> Please remove the comma(,) from the field or Put the entire text between the double quotes(" "), So the coomma(,) between them can be ignored. <br /></span>';
-$string['newline_error'] = '<span style="color: #990000; ">Upload failed. New Line found in <b> Question {$a} . </b> Make sure that entire question with choices and answers are in one line itself.<br /> Please correct this question and try importing again. <br /> No Question has been imported.</span>';
-$string['csv_file_error'] = '<span style="color: #990000; ">Upload failed. Something went wrong at line number <b/> {$a} . </b> Make sure you are uploading a valid CSV file.<br /> Please check that, <b> Simple CSV file must have 8 headers/fields and Extended CSV file must have 13 headers/fields in order work.</b><br /> Please correct the error and try importing again. <br /> No Question has been imported.</span>';
+$string['type_error'] = '<span class="text-danger">Upload failed. No type set found in <b> Question {$a} . </b><br /> Please set a type (like Numerical or essay) in the field.<br /> Please correct this question and try importing again. <br /> No Question has been imported.<br /></span>';
+$string['questiontext_error'] = '<span class="text-danger">Upload failed. No question text found in <b> Question {$a} . </b><br /> Make sure that entire essential question columns.<br /> Please correct this question and try importing again. <br /> No Question has been imported.<br /></span>';
+$string['rightanswer_error'] = '<span class="text-danger">Upload failed. No right answer found in <b> Question {$a} . </b><br /> Make sure that entire essential question columns.<br /> Please correct this question and try importing again. <br /> No Question has been imported.<br /></span>';
+$string['alert_multichoice'] = '<span class="text-warning">Alert ! Incorrect number of answers in <b> Question {$a} . </b> We change the question type to Multiple Choice one right answer.<br /></span>';
 $string['samplefile'] = 'SampleFile';
 $string['privacy:metadata'] = 'The Ohie format plugin does not store any personal data.';
