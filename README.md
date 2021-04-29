@@ -80,7 +80,7 @@ example 3:
 
 ### Requirements:
 
-You will find in this git a .xlsx file.  
+You will find in this git the qformat_ohie_sample.xlsx file.  
 You only have to fill in the columns and export it in CSV format separated by semi-colons( ; )  
 Required columns : 
 - Type: select from the drop down menu your question type.
