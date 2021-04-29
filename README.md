@@ -20,10 +20,10 @@ It will look like this:
 "Question [0-9][0-9][0-9]" if between 100 and 999(inclusive) total  
 **Warning:** If you wish to enter your own question names, it is advisable to do so for all questions.
 
-### Short-Answer up to 7 possible answers
+### Short-Answer up to 6 alternative answers
 When you make a qtype 'ShortAnswer' You have the possibility to validate up to 7 answers.
 The main one must be in the field Right(s) answer(s).
-The secondary ones in one of the fields from A to F
+The alternative in one of the fields from A to F
 
 ### Allow negative point for multichoise with one right answer
 You have the option of setting a negative point percentage for single answer multichoice questions.
