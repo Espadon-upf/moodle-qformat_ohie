@@ -1,6 +1,6 @@
 # moodle-qformat_ohie
 A moodle plugin for a new qformat based on CSV  
-This plugin is greatly inspired by the 'CSV format' plugin Maintained by Gopal Sharma
+This plugin is greatly inspired by the 'CSV format' plugin maintained by Gopal Sharma
 
 -----------------
 
@@ -121,25 +121,29 @@ Required columns :
 
 #### Multiple choice
 
-One correct answer:
+- One correct answer: 
+  - without negative point 
+![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/MultichoiceOneRightAnswer.gif)
+  - with negative point 
+![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/MultichoiceOneRightAnswerNegativPoint.gif)
 
-Multiple correct answers:
+- Multiple correct answers:  
+![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/MultichoiceAllOrNothing.gif)
 
-All Or Nothing:
+- All Or Nothing:  
+![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/MultichoiceAllOrNothing.gif)
 
 #### Short Answer
-
-
-
+![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/ShortAnswer.gif)
 
 #### Essay
-
+![essay.gif](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/Essay.gif)
 
 #### True/False
-
+![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/TrueFalse.gif)
 
 #### Numerical
-
+![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/Numerical.gif)
 
 -----------------
 
