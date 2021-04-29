@@ -6,8 +6,8 @@ This plugin is greatly inspired by the 'CSV format' plugin maintained by Gopal S
 
 ## General information
 
-The **_"moodle-qformat_ohie"_**, allow you to import questions from a csv file for moodle.
-
+The **_"moodle-qformat_ohie"_**, allow you to import questions from a csv file for moodle.  
+**Ohie:** means easy to do
 
 -----------------
 ## Features
@@ -19,6 +19,11 @@ It will look like this:
 "Question [0-9][0-9]" if between 10 and 100 questions in total  
 "Question [0-9][0-9][0-9]" if between 100 and 999(inclusive) total  
 **Warning:** If you wish to enter your own question names, it is advisable to do so for all questions.
+
+### Essay up to 7 possible answers
+When you make a qtype 'ShortAnswer' You have the possibility to validate up to 7 answers.
+The main one must be in the field Right(s) answer(s).
+The secondary ones in one of the fields from A to F
 
 ### Allow negative point for multichoise with one right answer
 You have the option of setting a negative point percentage for single answer multichoice questions.
@@ -83,6 +88,8 @@ Required columns :
 - Question text: the question statement
 - Right(s) answer(s): the right answer(s) (see explanation below)
 
+
+**WARNING !** To use the all or nothing type you will need to install it first (see : <a href="https://moodle.org/plugins/qtype_multichoiceset">here</a>)
 
 
 -----------------
