@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021041401;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->maturity  = MATURITY_ALPHA;  // Maturity level.
+$plugin->version   = 2021042801;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->maturity  = MATURITY_STABLE;  // Maturity level.
 $plugin->component  = 'qformat_ohie';  // Plugin name.
 $plugin->release  = '3.10.3 (Build: 2020110903)';  // The current module release in human-readable form (x.y).
 $plugin->requires = 2015111609;  // Requires Moodle 3.0 or later. But, I think this plugin works with earlier version also.
