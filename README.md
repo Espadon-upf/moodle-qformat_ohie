@@ -108,19 +108,12 @@ Required columns :
 
 -----------------
 
-## How to prepare a text file
+## How to install
+1. Clone this repository.
+2. copy the content of the package into the /question/format directory under the root of Moodle.
+3. log in as administrator and complete the installation
 
-1. Set question type
-2. Define answer variants.
-
->multichoice (question type)  
->1.  Qui a le premier découvert la relation entre le chômage et l’inflation ?(number of the question(dot) question)  
->(Answer variants)  
->A.  Solow  
->B.  Samuelson  
->C.  Friedman  
->D.  Phillips  
->Answer:  D (Answer: Correct Answer)
+<a href="https://docs.moodle.org/34/en/Installing_plugins">Read the Plugin installation guide</a> or complete steps about installing a new plugin in Moodle.
 
 -----------------
 
