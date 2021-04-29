@@ -122,28 +122,28 @@ Required columns :
 #### Multiple choice
 
 - One correct answer: 
-  - without negative point 
-![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/MultichoiceOneRightAnswer.gif)
-  - with negative point 
-![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/MultichoiceOneRightAnswerNegativPoint.gif)
+  - without negative point:  
+to see a gif <a href="gif/MultichoiceOneRightAnswer.gif"> click on me !</a>
+  - with negative point:  
+to see a gif <a href="gif/MultichoiceOneRightAnswerNegativPoint.gif"> click on me !</a>
 
 - Multiple correct answers:  
-![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/MultichoiceAllOrNothing.gif)
+to see a gif <a href="gif/MultichoiceAllOrNothing.gif"> click on me !</a>
 
 - All Or Nothing:  
-![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/MultichoiceAllOrNothing.gif)
+to see a gif <a href="gif/MultichoiceAllOrNothing.gif"> click on me !</a>
 
 #### Short Answer
-![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/ShortAnswer.gif)
+to see a gif <a href="gif/ShortAnswer.gif"> click on me !</a>
 
 #### Essay
-![essay.gif](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/Essay.gif)
+to see a gif <a href="gif/Essay.gif"> click on me !</a>
 
 #### True/False
-![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/TrueFalse.gif)
+to see a gif <a href="gif/TrueFalse.gif"> click on me !</a>
 
 #### Numerical
-![](https://github.com/Espadon-upf/moodle-qformat_ohie/blob/main/gif/Numerical.gif)
+to see a gif <a href="gif/Numerical.gif"> click on me !</a>
 
 -----------------
 
