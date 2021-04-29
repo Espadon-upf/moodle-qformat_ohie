@@ -113,7 +113,7 @@ Required columns :
 2. copy the content of the package into the /question/format directory under the root of Moodle.
 3. log in as administrator and complete the installation
 
-<a href="https://docs.moodle.org/34/en/Installing_plugins">Read the Plugin installation guide</a> or complete steps about installing a new plugin in Moodle.
+<a href="https://docs.moodle.org/34/en/Installing_plugins">Read the Plugin installation guide</a> for complete steps about installing a new plugin in Moodle.
 
 -----------------
 
