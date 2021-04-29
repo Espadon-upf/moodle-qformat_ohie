@@ -7,7 +7,7 @@ This plugin is greatly inspired by the 'CSV format' plugin maintained by Gopal S
 ## General information
 
 The **_"moodle-qformat_ohie"_**, allow you to import questions from a csv file for moodle.  
-**Ohie:** means easy to do
+**'ōhie:** means easy to do in tahitian
 
 -----------------
 ## Features
