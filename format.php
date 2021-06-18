@@ -293,7 +293,7 @@ class qformat_ohie extends qformat_default {
     }
 
     private function setessentialpart($question,$questioncategory, $rowdata, $totalofquestion ){
-        //catégorie
+        //category
         $question->category = $questioncategory;
         //question name
         $question->name = $this->getquestionname($rowdata, $totalofquestion );
@@ -305,7 +305,7 @@ class qformat_ohie extends qformat_default {
         if($questionmark != 1 ) {
             $question->defaultmark = $questionmark;
         }
-        // génnéral feedback
+        // general feedback
         $question->generalfeedback = $rowdata[5];
         $question->generalfeedbackformat = FORMAT_HTML;
         return $question;
@@ -350,7 +350,7 @@ class qformat_ohie extends qformat_default {
         } elseif ($questiontype == "Multiple Choice multiple right answers") {
             $question = $this->import_multichoice_multiple_right_answer($rowdata);
         } else {
-            //eror
+            //error
         }
         return $question;
     }
