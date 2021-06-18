@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /*
- hiuao format - simple format for creating multiple and single choice questions.
+ ohie format - simple format for creating multiple and single choice questions.
  * The format looks like this for simple csv file with minimum columns:
  * questionname, questiontext, A,   B,   C,   D,   Answer 1,    Answer 2
  * Question1, "3, 4, 7, 8, 11, 12, ... What number should come next?",7,10,14,15,D
@@ -81,7 +81,7 @@ class qformat_ohie extends qformat_default {
                 $totalofquestion = $rowdata[0];
             }
         }
-        $questioncatégory = explode(';', $lines[0])[1];
+        $questioncategory = explode(';', $lines[0])[1];
         for ($rownum = 2; $rownum < count($lines); $rownum++){
             $rowdata = str_getcsv($lines[$rownum],";");
             if(!empty($rowdata[0])) {
@@ -101,7 +101,7 @@ class qformat_ohie extends qformat_default {
                 }
                 $columncount = count($rowdata);
                 $question = $this->setquestion($rowdata);
-                $question = $this->setessentialpart($question, $questioncatégory, $rowdata, $totalofquestion);
+                $question = $this->setessentialpart($question, $questioncategory, $rowdata, $totalofquestion);
                 $questions[] = $question;
             }
         }
